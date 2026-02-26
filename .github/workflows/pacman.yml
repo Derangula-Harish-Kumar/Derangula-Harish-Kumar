@@ -2,9 +2,8 @@ name: Generate Pacman Animation
 
 on:
   schedule:
-    # Runs automatically every 24 hours
     - cron: "0 0 * * *"
-  workflow_dispatch: # Allows you to run it manually right now
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -16,12 +15,21 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Generate pacman-contribution-graph
+      - name: Generate Light Theme
         uses: abozanona/pacman-contribution-graph@main
         with:
           github_user_name: ${{ github.repository_owner }}
+          theme: github
+          output: dist/pacman-contribution-graph.svg
 
-      - name: Push animation to output branch
+      - name: Generate Dark Theme
+        uses: abozanona/pacman-contribution-graph@main
+        with:
+          github_user_name: ${{ github.repository_owner }}
+          theme: github-dark
+          output: dist/pacman-contribution-graph-dark.svg
+
+      - name: Push animations to output branch
         uses: crazy-max/ghaction-github-pages@v3.1.0
         with:
           target_branch: output
